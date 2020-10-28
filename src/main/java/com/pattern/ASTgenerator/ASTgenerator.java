@@ -8,6 +8,7 @@ import gastmappers.MapperFactory;
 import gastmappers.exceptions.UnsupportedLanguageException;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -30,8 +31,8 @@ public class ASTgenerator {
     this.inputPath = inputFolder;
     this.language = language;
     this.mapper = factory.createMapper(language);
-    this.analyzedFactsList = new ArrayList<String>();
-    this.compilationUnitsList = new ArrayList<CompilationUnit>();
+    this.analyzedFactsList = new ArrayList<>();
+    this.compilationUnitsList = new ArrayList<>();
   }
 
   /**
@@ -46,7 +47,7 @@ public class ASTgenerator {
     String folderPath = folders.getCanonicalPath() + File.separator;
     File root = new File(folderPath);
     File[] sourceFiles = root.listFiles();
-    String sourcePath = null;
+    String sourcePath;
     if (sourceFiles != null){
       for (File s: sourceFiles) {
         sourcePath = s.getAbsolutePath();
@@ -75,6 +76,18 @@ public class ASTgenerator {
       compilationUnitsList.add(unit);
       analyzedFactsList.add(json.toJson(unit).replaceAll("null,", "")); // IS THIS RIGHT?
     }
+  }
+
+  /**
+   * Guarda el AST creado en una ruta especifica
+   * author @gezele14
+   * */
+  public void saveAnalyzedPattern(String path, String filename) throws  IOException{
+    String dir = path+filename+".json";
+    FileWriter fw = new FileWriter(dir);
+    fw.write(analyzedFactsList.toString());
+    fw.close();
+    System.out.println("<i> AST del patron "+filename+ "creado correctamente.");
   }
 
   public ArrayList<String> getAnalyzedFactsList() {

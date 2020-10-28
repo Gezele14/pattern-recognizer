@@ -9,8 +9,9 @@ import java.io.IOException;
 public class PatternRecognizer {
   public static void main(String[] args) throws UnsupportedLanguageException, IOException {
     //Needed for comparing
-    String BasePath = "D:\\huston\\src\\";
-    String patterns[] = {"Hola", "bridge", "chainOfResponsibility", "command", "composite", "decorator", "factory", "observer",
+    String BasePath = "D:\\huston\\src\\"; //Location of example patterns
+    String[] patterns; // Example Patterns
+    patterns = new String[]{"bridge", "chainOfResponsibility", "command", "composite", "decorator", "factory", "observer",
                         "prototype", "proxy", "singleton", "state", "strategy", "template", "visitor"};
 
     ASTgenerator astGenerator = new ASTgenerator();
@@ -18,9 +19,7 @@ public class PatternRecognizer {
     for (String pattern: patterns) {
       astGenerator.InitGenerator(BasePath, Language.JAVA);
       astGenerator.AnalyzeInputFolder(pattern);
-      System.out.println("Arbol del patron: "+pattern);
-      System.out.println(astGenerator.AnalyzedFactsString());
-      System.out.println("\n\n");
+      astGenerator.saveAnalyzedPattern("src/main/java/com/pattern/examplePatterns/", pattern);
     }
 
   }
