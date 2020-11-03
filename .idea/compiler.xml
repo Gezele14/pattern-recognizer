@@ -9,6 +9,6 @@
         <module name="pattern-recognizer" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="5" />
   </component>
 </project>
