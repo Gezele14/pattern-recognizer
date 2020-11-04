@@ -1,10 +1,8 @@
-package com.pattern.ASTgenerator;
+package com.pattern.ASTmanager;
 
 import ASTMCore.ASTMSource.CompilationUnit;
-import com.google.gson.Gson;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
 import gastmappers.Language;
@@ -13,11 +11,9 @@ import gastmappers.MapperFactory;
 import gastmappers.exceptions.UnsupportedLanguageException;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ASTgenerator {
   private String inputPath;
@@ -66,8 +62,6 @@ public class ASTgenerator {
    * */
   public void AnalyzeFacts() throws IOException, UnsupportedLanguageException {
     RetrieveInputFolder(this.inputPath);
-    Object gast = Configuration.defaultConfiguration().jsonProvider().parse(AnalyzedFactsString());
-    List<String> methods = JsonPath.read(gast, "..declOrDefn[?(@.tag == 'method')].['signature', 'className', 'packageName', 'method']");
   }
 
   /**
@@ -98,7 +92,6 @@ public class ASTgenerator {
   }
 
   private void RetrieveSourceFile(String sourcePath, String fileName) throws  IOException{
-    Gson json = new Gson();
     Genson genson = new GensonBuilder()
             .useClassMetadata(true)
             .useRuntimeType(true)
@@ -110,46 +103,10 @@ public class ASTgenerator {
       compilationUnitsList.add(unit);
       retrievedGastList.add(genson.serialize(unit));
     }
-
   }
 
-  /**
-   * Stores the generated AST into de path
-   * @author gezele14
-   * @param path: Directory where file is stored
-   * @param filename: Name of the file
-   * */
-  public void saveAnalyzedPattern(String path, String filename) throws  IOException{
-    String dir = path+filename+".json";
-    FileWriter fw = new FileWriter(dir);
-    fw.write(retrievedGastList.toString());
-    fw.close();
-    System.out.println("<i> AST del patron "+filename+ " creado correctamente.");
-  }
+  /**Getters and Setters**/
 
-  /**
-   * Stores the generated AST into de path
-   * @author gezele14
-   * @param path: Directory where file is stored
-   * @param filename: Name of the file
-   * */
-  private String readASTfromFile(String path, String filename) throws IOException{
-    String dir = path+filename+".json";
-    File f = new File(dir);
-    Scanner myReader = new Scanner(f);
-    return myReader.nextLine();
-  }
-
-  public ArrayList<CompilationUnit> getCompilationUnitsListFromFile(String path, String filename) throws  IOException{
-    String AST = readASTfromFile(path, filename);
-    Gson json = new Gson();
-    Genson genson = new GensonBuilder()
-            .useClassMetadata(true)
-            .useRuntimeType(true)
-            .useConstructorWithArguments(true)
-            .create();
-    return genson.deserialize(AST, new GenericType<ArrayList<CompilationUnit>>() {});
-  }
 
 
   public ArrayList<String> getRetrievedGastList() {

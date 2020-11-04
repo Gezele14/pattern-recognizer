@@ -1,10 +1,10 @@
 package com.pattern.recognizer;
 
-import com.google.gson.Gson;
-import com.pattern.ASTgenerator.ASTgenerator;
+import ASTMCore.ASTMSource.CompilationUnit;
+import com.pattern.ASTmanager.ASTgenerator;
+import com.pattern.ASTmanager.ASTmanager;
 import gastmappers.Language;
 import gastmappers.exceptions.UnsupportedLanguageException;
-import ASTMCore.ASTMSource.CompilationUnit;
 
 
 import java.io.IOException;
@@ -13,22 +13,18 @@ import java.util.ArrayList;
 public class PatternRecognizer {
   public static void main(String[] args) throws UnsupportedLanguageException, IOException {
     //Needed for comparing
-    String BasePath = "D:\\huston\\src\\"; //Location of example patterns
-    String[] classPath =
-            {
-                    "C:\\Program Files\\Java\\jdk1.8.0_251\\jre\\lib\\rt.jar"
-            };
-    String[] patterns; // Example Patterns
-    patterns = new String[]{"bridge", "chainOfResponsibility", "command", "composite", "decorator", "factory", "observer",
-                        "prototype", "proxy", "singleton", "state", "strategy", "template", "visitor"};
+    String codeDir = "D:\\huston\\src\\"; //Location of coded to analyze
+    String[] classPath = {"C:\\Program Files\\Java\\jdk1.8.0_251\\jre\\lib\\rt.jar"};
 
-    ASTgenerator astGenerator = new ASTgenerator();
-    for (String pattern:patterns){
-      astGenerator.InitGenerator(BasePath, classPath, Language.JAVA);
-      CompilationUnit unit = astGenerator.getCompilationUnitsListFromFile("src/main/java/com/pattern/examplePatterns/", pattern).get(0);
-      System.out.println(unit.getLanguage());
-      astGenerator.clearData();
-    }
+    ASTgenerator generator = new ASTgenerator();
+    ASTmanager manager = new ASTmanager();
 
+    ArrayList<String> patterns = manager.GetDBPatterns(); //Obtiene la lista de los patrones de la base de datos
+
+    ArrayList<CompilationUnit> example, example2 = new ArrayList<>();
+    generator.InitGenerator(codeDir+patterns.get(0),classPath, Language.JAVA);
+    generator.AnalyzeFacts();
+    example = manager.GetPatternFromDB(patterns.get(0));
+    example2 = generator.getCompilationUnitsList();
   }
 }
