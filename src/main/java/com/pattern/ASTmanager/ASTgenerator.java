@@ -1,12 +1,14 @@
 package com.pattern.ASTmanager;
 
 import ASTMCore.ASTMSource.CompilationUnit;
+
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
 import gastmappers.Language;
 import gastmappers.Mapper;
+
 import gastmappers.MapperFactory;
 import gastmappers.exceptions.UnsupportedLanguageException;
 
