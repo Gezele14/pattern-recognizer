@@ -4,6 +4,7 @@ import ASTMCore.ASTMSource.CompilationUnit;
 import com.pattern.ASTmanager.JSONEncoder;
 import com.pattern.ASTmanager.ASTgenerator;
 import com.pattern.ASTmanager.ASTmanager;
+import com.pattern.ASTmanager.PatternsAnalyzer;
 import gastmappers.Language;
 import gastmappers.exceptions.UnsupportedLanguageException;
 import org.json.simple.JSONArray;
@@ -29,12 +30,13 @@ public class PatternRecognizer {
      */
 
     //**** Paso 1 ****
-    String codeDir = "D:\\Bibliotecas\\Descargas\\huston\\huston\\src\\singleton\\"; //Location of coded to analyze
+    //String codeDir = "D:\\Bibliotecas\\Descargas\\huston\\huston\\src\\factory\\"; //Location of coded to analyze
+    String codeDir = "D:\\Bibliotecas\\Documentos\\Java projects\\SigletonExmple\\src\\main\\java\\code\\"; //Location of coded to analyze
     String[] classPath = {"C:\\Program Files\\Java\\jdk1.8.0_251\\jre\\lib\\rt.jar"};
     ArrayList<CompilationUnit> codeAST= new ArrayList<>();
     generator.InitGenerator(codeDir,classPath, Language.JAVA); //lee la ruta de los Source files
-    generator.AnalyzeFacts(); // analiza el codigo
-    codeAST = generator.getCompilationUnitsList(); //crea el AST
+    generator.AnalyzeFacts(); // analiza el codigo y crea el AST
+    codeAST = generator.getCompilationUnitsList(); //Obtiene el AST
 
     //**** Paso 2 ****
     JSONEncoder Deco= new JSONEncoder();
@@ -45,9 +47,18 @@ public class PatternRecognizer {
       newAST.add((JSONObject) parser.parse(Deco.getJsonClass()));
       Deco = new JSONEncoder();
     }
-    System.out.println(newAST.toJSONString());
 
-//    System.out.println(example.get(0).getgPackage());
+    //**** Paso 3 ****
+    PatternsAnalyzer recognizer = new PatternsAnalyzer(newAST);
+    ArrayList<String> patternsOfCode = recognizer.getPatternsOfAST();
+    if(patternsOfCode.size() > 0) {
+      System.out.println("El codigo posee los patrones:");
+      for (String item : patternsOfCode) {
+        System.out.println("\t- " + item);
+      }
+    }else{
+      System.out.println("No se pudo identificar ningun patron");
+    }
   }
 }
 
