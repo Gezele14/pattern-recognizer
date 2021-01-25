@@ -2,8 +2,7 @@ package com.pattern.ASTmanager;
 
 import ASTMCore.ASTMSource.CompilationUnit;
 
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
+
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
 import gastmappers.Language;
@@ -15,7 +14,6 @@ import gastmappers.exceptions.UnsupportedLanguageException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ASTgenerator {
   private String inputPath;
@@ -108,8 +106,6 @@ public class ASTgenerator {
   }
 
   /**Getters and Setters**/
-
-
 
   public ArrayList<String> getRetrievedGastList() {
     return retrievedGastList;

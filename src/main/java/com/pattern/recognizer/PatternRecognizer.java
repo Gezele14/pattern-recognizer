@@ -30,13 +30,15 @@ public class PatternRecognizer {
      */
 
     //**** Paso 1 ****
-    //String codeDir = "D:\\Bibliotecas\\Descargas\\huston\\huston\\src\\factory\\"; //Location of coded to analyze
-    String codeDir = "D:\\Bibliotecas\\Documentos\\Java projects\\SigletonExmple\\src\\main\\java\\code\\"; //Location of coded to analyze
+//    String codeDir = "D:\\Bibliotecas\\Descargas\\huston\\huston\\src\\singleton\\"; //Location of coded to analyze
+    String codeDir = "D:\\Bibliotecas\\Descargas\\huston\\huston\\src\\factory\\"; //Location of coded to analyze
+//    String codeDir = "D:\\Bibliotecas\\Documentos\\Java projects\\SigletonExmple\\src\\main\\java\\code\\"; //Location of coded to analyze
     String[] classPath = {"C:\\Program Files\\Java\\jdk1.8.0_251\\jre\\lib\\rt.jar"};
     ArrayList<CompilationUnit> codeAST= new ArrayList<>();
     generator.InitGenerator(codeDir,classPath, Language.JAVA); //lee la ruta de los Source files
     generator.AnalyzeFacts(); // analiza el codigo y crea el AST
     codeAST = generator.getCompilationUnitsList(); //Obtiene el AST
+//    System.out.println(generator.getRetrievedGastList());
 
     //**** Paso 2 ****
     JSONEncoder Deco= new JSONEncoder();
@@ -47,6 +49,7 @@ public class PatternRecognizer {
       newAST.add((JSONObject) parser.parse(Deco.getJsonClass()));
       Deco = new JSONEncoder();
     }
+//    System.out.println(newAST.toJSONString());
 
     //**** Paso 3 ****
     PatternsAnalyzer recognizer = new PatternsAnalyzer(newAST);

@@ -1,16 +1,16 @@
 package com.pattern.ASTmanager;
 
-import com.google.gson.JsonObject;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+
 
 import java.util.ArrayList;
 
 public class PatternsAnalyzer {
   private JSONArray jsonPattern;
   private ArrayList<String> implementedPatterns;
+
 
   /**
    * Constructor
@@ -48,7 +48,7 @@ public class PatternsAnalyzer {
       //Analyze methods
       for(JSONObject method: methods){
         ArrayList<String> modifiers = this.getModifiers(method);
-        if(method.get("returnType") == null) {
+        if(method.get("returnType") == null) { //null significa que es el constructor
           for (String modifier : modifiers) {
             if (modifier.equals("public")) {
               return false;

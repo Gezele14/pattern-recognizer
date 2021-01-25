@@ -9,7 +9,7 @@ import ASTMCore.ASTMSyntax.Statement.*;
 import ASTMCore.ASTMSyntax.Types.*;
 import ASTMCore.visitor.GASTVisitor;
 
-import java.util.ArrayList;
+
 import java.util.Iterator;
 
 public class JSONEncoder implements GASTVisitor {
@@ -57,6 +57,24 @@ public class JSONEncoder implements GASTVisitor {
   public void visitClassType(ClassType classType) {
     jsonClass += "\"className\": ";
     classType.getNameString().accept(this);
+    jsonClass += "\"implements\": [";
+    if(classType.getImplementesTo() != null){
+      for(ImplementsTo imp: classType.getImplementesTo()){
+        imp.accept(this);
+      }
+    }else{
+      jsonClass += "null";
+    }
+    jsonClass += "],";
+    jsonClass += "\"extends\": [";
+    if(classType.getDerivesFrom()!= null){
+      for(DerivesFrom deriv: classType.getDerivesFrom()){
+        deriv.accept(this);
+      }
+    }else{
+      jsonClass += "null";
+    }
+    jsonClass += "],";
     jsonClass += "\"atributes\": [";
     for (MemberObject member : classType.getMembers()) {
       member.accept(this);
@@ -132,6 +150,11 @@ public class JSONEncoder implements GASTVisitor {
     functionDefintion.getIdentifierName().accept(this);
     jsonClass += "},";
 
+  }
+
+  @Override
+  public void visitImplementsTo(ImplementsTo implementsTo) {
+    jsonClass += "\""+implementsTo.getInterfaceName()+"\",";
   }
 
   @Override
@@ -238,12 +261,7 @@ public class JSONEncoder implements GASTVisitor {
 
   @Override
   public void visitDerivesFrom(DerivesFrom derivesFrom) {
-
-  }
-
-  @Override
-  public void visitImplementsTo(ImplementsTo implementsTo) {
-
+    jsonClass += "\""+derivesFrom.getClassName()+"\",";
   }
 
   @Override
